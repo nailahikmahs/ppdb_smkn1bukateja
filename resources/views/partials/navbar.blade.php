@@ -1,4 +1,5 @@
-<nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background: linear-gradient(to left, #ff416c, #ff4b2b);">
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top"
+    style="background: linear-gradient(to left, #ff416c, #ff4b2b);">
     <div class="container-fluid">
         <!-- Logo -->
         <a class="navbar-brand d-flex align-items-center" href="/">
@@ -17,7 +18,8 @@
                     <a class="nav-link {{ Request::is('#tentang') ? 'active' : '' }}" href="#tentang">Tentang</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::is('#pendaftaran') ? 'active' : '' }}" href="/loginSiswa">Daftar Sekarang</a>
+                    <a class="nav-link {{ Request::is('#pendaftaran') ? 'active' : '' }}" href="/login-siswa">Daftar
+                        Sekarang</a>
                 </li>
             </ul>
             <ul class="navbar-nav ms-auto">
@@ -27,9 +29,9 @@
                     </a>
                 </li>
             </ul>
-            
-            
-            
+
+
+
         </div>
     </div>
 </nav>
