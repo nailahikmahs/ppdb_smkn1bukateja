@@ -18,6 +18,7 @@ class Pendaftar extends Model
         'pendaftar_id',
         'periode_id',
         'nama_lengkap',
+        'username',
         'password',
         'jenis_kelamin',
         'nik_anak',

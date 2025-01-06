@@ -1,12 +1,12 @@
 <?php
 
-
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Pendaftar;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Http\Request;
 
 class LoginsiswaController extends Controller
 {
@@ -21,27 +21,52 @@ class LoginsiswaController extends Controller
     {
         // Validasi input
         $request->validate([
-            'pendaftar_id' => 'required|integer',
-            'password' => 'required|string|min:6',
+            'username' => 'required|string|max:255',
+            'password' => 'required|string|max:255',
         ]);
 
-        // Mencari pendaftar berdasarkan pendaftar_id
-        $pendaftar = Pendaftar::where('pendaftar_id', $request->pendaftar_id)->first();
+        // Cek apakah username ada di tabel pendaftar
+        $pendaftar = Pendaftar::where('username', $request->username)->first();
+        // dd($pendaftar);
 
-        if ($pendaftar && Hash::check($request->password, $pendaftar->password)) {
-            // Jika berhasil login, set session dan arahkan ke halaman yang diinginkan
-            Session::put('pendaftar_id', $pendaftar->pendaftar_id);
-            return redirect()->route('homeSiswa'); // Ganti dengan route tujuan setelah login
+
+        // cek apakah pendaftar ada atau tidak
+        if (isset($pendaftar)) {
+            // dd($request->password);
+            if (Hash::check($request->password, $pendaftar->password)) {
+                // Password cocok
+                // Cek apakah user sudah ada di tabel users
+                $user = User::where('username', $pendaftar->username)->first();
+
+                // Jika belum ada, buatkan data user baru di tabel users
+                if (!$user) {
+                    $user = User::create([
+                        'name' => $pendaftar->nama_lengkap,
+                        'username' => $pendaftar->username,
+                        'password' => $pendaftar->password, // Password sudah terenkripsi di pendaftar
+                        'role' => 'siswa', // Tambahkan role default
+                    ]);
+                }
+
+                // Simpan sesi login
+                Session::put('user_id', $user->id);
+
+                // return redirect()->route('pendaftar.formulir'); // Arahkan ke halaman siswa
+                return redirect()->intended('/dashboard2');
+            }else{
+                // Jika password salah
+                return back()->withErrors(['username' => 'Password salah']);
+            }
+        } else {
+            // Jika pendaftar tidak ada
+            return back()->withErrors(['username' => 'Username tidak ditemukan']);
         }
-
-        // Jika login gagal, kembali ke halaman login dengan pesan error
-        return back()->withErrors(['password' => 'Pendaftar ID atau password salah']);
     }
 
-    // Logout siswa
+    // Logout
     public function logout()
     {
-        Session::forget('pendaftar_id');
-        return redirect()->route('loginSiswa'); // Ganti dengan route login siswa
+        Session::forget('user_id');
+        return redirect()->route('loginSiswa');
     }
 }

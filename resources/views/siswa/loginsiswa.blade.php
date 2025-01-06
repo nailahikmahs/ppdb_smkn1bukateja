@@ -1,5 +1,5 @@
 @extends('login.main')
-@include('partials.navbar')
+@include('partials.navbarr')
 
     <style>
         body {
@@ -49,6 +49,21 @@
             background-color: #0056b3;
         }
 
+        .btn-success {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .btn-success:hover {
+            background-color: #0056b3;
+        }
+
         .error-message {
             color: red;
             font-size: 0.9rem;
@@ -74,14 +89,18 @@
         {{-- Form Login --}}
         <form action="{{ route('loginSiswa') }}" method="POST">
             @csrf
-            <label for="pendaftar_id">Pendaftar ID:</label>
-            <input type="text" name="pendaftar_id" id="pendaftar_id" class="form-control" placeholder="Masukkan Pendaftar ID" required>
-
+            <label for="username">Username:</label>
+            <input type="text" name="username" id="username" class="form-control" placeholder="Masukkan Username" required>
+        
             <label for="password">Password:</label>
             <input type="password" name="password" id="password" class="form-control" placeholder="Masukkan Password" required>
-
+        
             <button type="submit" class="btn-primary">Login</button>
+        
+            <!-- Menambahkan margin top pada button "Kembali" untuk memberi jarak -->
+            <a href="{{ route('siswa.create') }}" class="btn btn-success mt-3">Kembali</a>
         </form>
+        
     </div>
 </body>
 </html>

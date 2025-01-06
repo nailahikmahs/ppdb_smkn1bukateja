@@ -421,19 +421,19 @@
                 <span class="badge bg-info text-dark">10 Juni 2024</span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
-                <strong>Pengambilan nomor pendaftaran:</strong>
+                <strong>Pendaftaran Peserta:</strong>
                 <span class="badge bg-info text-dark">15 s.d 18 Juni 2024</span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
-                <strong>Pendaftaran dan perubahan pilihan:</strong>
-                <span class="badge bg-info text-dark">18 – 24 Juni 2024</span>
+                <strong>Masa Seleksi:</strong>
+                <span class="badge bg-info text-dark">18 s.d 24 Juni 2024</span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
-                <strong>Masa Tenang:</strong>
-                <span class="badge bg-info text-dark">24 s.d 30 Juni 2024</span>
+                <strong>Perubahan Pilihan:</strong>
+                <span class="badge bg-info text-dark">24 – 25 Juni 2024</span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
-                <strong>Pengumuman Hasil:</strong>
+                <strong>Pengumuman Hasil:</strong>eb
                 <span class="badge bg-info text-dark">01 Juli 2024</span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -535,7 +535,7 @@
             z-index: 1; 
             border-radius: 15px;">
         </div>
-        <div style="position: relative; z-index: 2;" id="Daftar Sekarang">
+        <div style="position: relative; z-index: 2;" id="daftar_sekarang">
             <h2 style="font-size: 2.5rem; font-weight: bold; margin-bottom: 1rem;">Siap Mendaftar?</h2>
             <p style="font-size: 1.25rem; margin-bottom: 2rem;">Jangan lewatkan kesempatan untuk bergabung bersama
                 kami.</p>

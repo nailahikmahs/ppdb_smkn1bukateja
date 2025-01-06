@@ -2,6 +2,8 @@
 
 @section('content')
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
     <style>
         body {
             display: flex;
@@ -50,6 +52,34 @@
             margin: 0; /* Menghilangkan margin default pada heading */
         }
     </style>
+    <script>
+        function changeStatus(pendaftarId, status) {
+            if (confirm('Apakah Anda yakin ingin mengubah status?')) {
+                fetch(`/pendaftar/${pendaftarId}/update-status`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'  // Pastikan token CSRF ditambahkan
+                    },
+                    body: JSON.stringify({ status: status })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Status berhasil diubah!');
+                        location.reload();  // Refresh halaman untuk melihat perubahan
+                    } else {
+                        alert('Gagal mengubah status!');
+                    }
+                })
+                .catch(error => {
+                    alert('Terjadi kesalahan!');
+                    console.error('Error:', error);
+                });
+            }
+        }
+    </script>
+    
 </head>
 <body>
 
@@ -81,41 +111,56 @@
 <div class="container">
     <h1>Data Pendaftar</h1>
 
-    <a href="{{ route('pendaftar.create') }}" class="btn btn-primary mb-3">Tambah Data</a>
+    
+    <!-- Form Pencarian -->
+<form action="{{ route('data.pendaftar') }}" method="GET" class="mb-3">
+    <div class="input-group">
+        <input type="text" class="form-control" name="search" placeholder="Cari berdasarkan nama atau NIK..." value="{{ request()->query('search') }}" style="border-radius: 20px 0 0 20px;">
+        <button class="btn btn-primary" type="submit" style="border-radius: 0 20px 20px 0; font-weight: bold;">
+            <i class="fa fa-search"></i> Cari
+        </button>
+    </div>
+</form>
+
+
+    {{-- <a href="{{ route('pendaftar.create') }}" class="btn btn-primary mb-3">Tambah Data</a>
 
     @if (session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
+    @endif --}}
 
     <table class="table table-bordered table-hover">
         <thead class="thead-dark">
             <tr>
-                <th><input type="checkbox" id="select_all" onclick="toggleCheckboxes()"> Pilih Semua</th>
-                <th>No</th>
+                <th>Kode Pendaftar</th>
                 <th>Nama</th>
-                <th>Email</th>
-                <th>No. Telepon</th>
-                <th>Status</th>
+                <th>Username</th>
+                <th>Jenis Kelamin</th>
+                <th>NIK</th>
+                <th>Tanggal Lahir</th>
                 <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
             @forelse ($pendaftar as $data)
                 <tr>
-                    <td><input type="checkbox" class="select_checkbox" data-id="{{ $data->pendaftar_id }}"></td>
                     <td>{{ $data->pendaftar_id }}</td>
                     <td>{{ $data->nama_lengkap }}</td>
-                    <td>{{ $data->email }}</td>
-                    <td>{{ $data->no_telepon }}</td>
-                    <td>{{ $data->status }}</td>
+                    <td>{{ $data->username }}</td>
+                    <td>{{ $data->jenis_kelamin }}</td>
+                    <td>{{ $data->nik_anak }}</td>
+                    <td>{{ $data->tgl_lahir }}</td>
                     <td>
-                        <button type="button" class="btn btn-success" onclick="changeStatus('{{ $data->pendaftar_id }}', 'accepted')">
-                            <i class="fa fa-check"></i>
+                        <button type="button" class="btn btn-warning" onclick="changeStatus({{ $data->pendaftar_id }}, 'accepted')">
+                            <i class="fa fa-edit"></i>
                         </button>
-                        <button type="button" class="btn btn-danger" onclick="changeStatus('{{ $data->pendaftar_id }}', 'rejected')">
-                            <i class="fa fa-times"></i>
+                        <button type="button" class="btn btn-danger" onclick="changeStatus({{ $data->pendaftar_id }}, 'rejected')">
+                            <i class="fa fa-trash"></i>
                         </button>
                     </td>
+                    
+                    
+                    
                 </tr>
             @empty
                 <tr>
@@ -123,44 +168,7 @@
                 </tr>
             @endforelse
         </tbody>
+        
     </table>
-
-    
-    <script>
-        // Fungsi untuk memilih semua checkbox
-        function toggleCheckboxes() {
-            const selectAll = document.getElementById('select_all');
-            const checkboxes = document.querySelectorAll('.select_checkbox');
-            checkboxes.forEach(checkbox => {
-                checkbox.checked = selectAll.checked;
-            });
-        }
-    
-        // Fungsi untuk mengubah status pendaftar
-        function changeStatus(id, status) {
-            // Kirim request ke server untuk mengubah status pendaftar
-            fetch('/pendaftar/' + id + '/update-status', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({ status: status })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Status berhasil diubah!');
-                    location.reload(); // Reload halaman untuk memperbarui status
-                } else {
-                    alert('Gagal mengubah status');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        }
-    </script>
-    
 </div>
 @endsection
